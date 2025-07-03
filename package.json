@@ -5,18 +5,25 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-		"watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+		"watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+		"bundle": "node ./esbuild.cjs && mkdir -p ./dist/build/Release && cp ./node_modules/better-sqlite3/build/Release/better_sqlite3.node ./dist/build/Release/better_sqlite3.node ",
+		"build": "./node_modules/.bin/pkg --options experimental-require-module -t node22-macos, ./dist/server.cjs",
+		"all": "npm run bundle && npm run build"
 	},
 	"keywords": [],
 	"author": "Jeff Griffiths (  https://github.com/jeffgca )",
 	"license": "ISC",
 	"type": "module",
 	"devDependencies": {
+		"@yao-pkg/pkg": "^6.5.1",
+		"esbuild": "^0.25.5",
 		"jest": "^29.7.0",
 		"nodemon": "^3.1.9"
 	},
 	"dependencies": {
+		"better-sqlite3": "^12.2.0",
 		"dotenv": "^16.4.7",
-		"lodash-es": "^4.17.21"
+		"lodash-es": "^4.17.21",
+		"yargs": "^18.0.0"
 	}
 }

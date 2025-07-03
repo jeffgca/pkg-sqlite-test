@@ -1,0 +1,21 @@
+{
+  "name": "node",
+  "version": "0.0.1",
+  "description": "Template node module.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.cjs"
+  },
+  "keywords": [],
+  "author": "Jeff Griffiths (  https://github.com/jeffgca )",
+  "license": "ISC",
+  "type": "module",
+  "bin": "server.cjs",
+  "pkg": {
+    "assets": [
+      "dist/**",
+      "snippets/**",
+      "node_modules/**"
+    ]
+  }
+}

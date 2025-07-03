@@ -1,0 +1,5 @@
+{
+	"main": "./src/server.js",
+	"outputDir": "dist",
+	"outputScript": "server.cjs"
+}
