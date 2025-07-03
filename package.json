@@ -8,7 +8,10 @@
 		"watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
 		"bundle": "node ./esbuild.cjs && mkdir -p ./dist/build/Release && cp ./node_modules/better-sqlite3/build/Release/better_sqlite3.node ./dist/build/Release/better_sqlite3.node ",
 		"build": "./node_modules/.bin/pkg --options experimental-require-module -t node22-macos, ./dist/server.cjs",
-		"all": "npm run bundle && npm run build"
+		"build:mkdir": "mkdir -p ./dist/build/Release && mkdir -p ./build/Release",
+		"build:copy2dist": "cp -r ./node_modules/better-sqlite3/build/Release/better_sqlite3.node ./dist/build/Release/better_sqlite3.node",
+		"build:copy2root": "cp -r ./node_modules/better-sqlite3/build/Release/better_sqlite3.node ./build/Release/better_sqlite3.node",
+		"all": "npm run bundle && npm run build && npm run build:mkdir && npm run build:copy2dist && npm run build:copy2root"
 	},
 	"keywords": [],
 	"author": "Jeff Griffiths (  https://github.com/jeffgca )",
