@@ -1,0 +1,22 @@
+{
+	"name": "node",
+	"version": "0.0.1",
+	"description": "Template node module.",
+	"main": "index.js",
+	"scripts": {
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+		"watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+	},
+	"keywords": [],
+	"author": "Jeff Griffiths (  https://github.com/jeffgca )",
+	"license": "ISC",
+	"type": "module",
+	"devDependencies": {
+		"jest": "^29.7.0",
+		"nodemon": "^3.1.9"
+	},
+	"dependencies": {
+		"dotenv": "^16.4.7",
+		"lodash-es": "^4.17.21"
+	}
+}
