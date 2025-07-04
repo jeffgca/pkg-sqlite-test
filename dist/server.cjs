@@ -163,9 +163,9 @@ var require_bindings = __commonJS({
     init_esbuild_import_meta_url_shim();
     var fs = require("fs");
     var path = require("path");
-    var fileURLToPath3 = require_file_uri_to_path();
+    var fileURLToPath2 = require_file_uri_to_path();
     var join2 = path.join;
-    var dirname4 = path.dirname;
+    var dirname3 = path.dirname;
     var exists = fs.accessSync && function(path2) {
       try {
         fs.accessSync(path2);
@@ -276,12 +276,12 @@ var require_bindings = __commonJS({
       Error.stackTraceLimit = origSTL;
       var fileSchema = "file://";
       if (fileName.indexOf(fileSchema) === 0) {
-        fileName = fileURLToPath3(fileName);
+        fileName = fileURLToPath2(fileName);
       }
       return fileName;
     }, "getFileName");
     exports2.getRoot = /* @__PURE__ */ __name(function getRoot(file) {
-      var dir = dirname4(file), prev;
+      var dir = dirname3(file), prev;
       while (true) {
         if (dir === ".") {
           dir = process.cwd();
@@ -880,11 +880,8 @@ var require_lib = __commonJS({
 
 // src/server.js
 init_esbuild_import_meta_url_shim();
-var import_url2 = require("url");
 var import_promises = require("fs/promises");
 var import_path5 = require("path");
-var import_path6 = require("path");
-var import_fs4 = require("fs");
 
 // node_modules/yargs/index.mjs
 init_esbuild_import_meta_url_shim();
@@ -6453,8 +6450,6 @@ init_esbuild_import_meta_url_shim();
 
 // src/server.js
 var import_better_sqlite3 = __toESM(require_lib(), 1);
-var __filename2 = (0, import_url2.fileURLToPath)(__import_meta_url);
-var __dirname2 = (0, import_path5.dirname)(__filename2);
 var IS_PACKAGED = false;
 if (process.pkg) {
   IS_PACKAGED = true;
@@ -6468,7 +6463,7 @@ var argv = yargs_default(hideBin(process.argv)).option("data", {
   description: "Data directory path for the database (must be absolute)",
   demandOption: true,
   coerce: /* @__PURE__ */ __name((arg) => {
-    if (IS_PACKAGED === true && !(0, import_path6.isAbsolute)(arg)) {
+    if (IS_PACKAGED === true && !(0, import_path5.isAbsolute)(arg)) {
       throw new Error("Data path must be an absolute path");
     }
     return arg;
@@ -6479,7 +6474,7 @@ var argv = yargs_default(hideBin(process.argv)).option("data", {
   description: "Schema file path (must be absolute)",
   demandOption: true,
   coerce: /* @__PURE__ */ __name((arg) => {
-    if (IS_PACKAGED === true && !(0, import_path6.isAbsolute)(arg)) {
+    if (IS_PACKAGED === true && !(0, import_path5.isAbsolute)(arg)) {
       throw new Error("Schema path must be an absolute path");
     }
     return arg;
@@ -6498,17 +6493,19 @@ WHERE
     AND m.name NOT LIKE 'sqlite_%'
 ORDER BY 
     m.name, p.cid;`;
-(async () => {
-  const dbHandle = new import_better_sqlite3.default(`${argv.data}/server.sqlite`);
-  if (!(0, import_promises.access)(`${argv.schema}`, import_fs4.constants.F_OK)) {
-    console.error(`Missing schema file: ${argv.schema}`);
-  } else {
-    const schemaContent = await (0, import_promises.readFile)(argv.schema, "utf8");
-    dbHandle.exec(schemaContent);
-    console.log(`Schema loaded from ${argv.schema}`);
-    let result = dbHandle.prepare(SchemaQuery).all();
+var dbHandle = new import_better_sqlite3.default(`${argv.data}/server.sqlite`);
+(0, import_promises.readFile)(argv.schema, "utf8").then((schemaContent) => {
+  if (!schemaContent) {
+    throw new Error(`Schema file ${argv.schema} is empty or not found`);
   }
-})();
+  dbHandle.exec(schemaContent);
+  console.log(`Schema loaded from ${argv.schema}`);
+  let result = dbHandle.prepare(SchemaQuery).all();
+  console.log("results:", result);
+}).catch((err) => {
+  console.error(`Error reading schema file ${argv.schema}:`, err);
+  process.exit(1);
+});
 /*! Bundled license information:
 
 yargs-parser/build/lib/string-utils.js:

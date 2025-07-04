@@ -8,8 +8,10 @@ import { hideBin } from 'yargs/helpers'
 import Database from 'better-sqlite3'
 
 // Define __filename and __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = dirname(__filename)
+// console.log(`__dirname: ${__dirname}
+// __filename: ${__filename}`)
 
 let IS_PACKAGED = false
 
@@ -19,9 +21,6 @@ if (process.pkg) {
 } else {
 	console.log('info Running as a script')
 }
-
-// console.log(`__dirname: ${__dirname}
-// __filename: ${__filename}`)
 
 const argv = yargs(hideBin(process.argv))
 	.option('data', {
@@ -70,18 +69,23 @@ WHERE
 ORDER BY 
     m.name, p.cid;`
 
-;(async () => {
-	const dbHandle = new Database(`${argv.data}/server.sqlite`)
-	if (!access(`${argv.schema}`, constants.F_OK)) {
-		console.error(`Missing schema file: ${argv.schema}`)
-	} else {
-		const schemaContent = await readFile(argv.schema, 'utf8')
+const dbHandle = new Database(`${argv.data}/server.sqlite`)
+
+readFile(argv.schema, 'utf8')
+	.then((schemaContent) => {
+		if (!schemaContent) {
+			throw new Error(`Schema file ${argv.schema} is empty or not found`)
+		}
+
 		dbHandle.exec(schemaContent)
 
 		console.log(`Schema loaded from ${argv.schema}`)
 
 		let result = dbHandle.prepare(SchemaQuery).all()
 
-		// console.log('results:', result)
-	}
-})()
+		console.log('results:', result)
+	})
+	.catch((err) => {
+		console.error(`Error reading schema file ${argv.schema}:`, err)
+		process.exit(1)
+	})
